@@ -41,7 +41,7 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoEvents {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             val entity = data?.getParcelableExtra<TodoEntity>(Consts.INTENT) ?: return
-            when (resultCode) {
+            when (requestCode) {
                 Consts.INTENT_FROM_FAB -> viewModel.insertTodo(entity)
                 Consts.INTENT_FROM_VIEW -> Unit
             }
