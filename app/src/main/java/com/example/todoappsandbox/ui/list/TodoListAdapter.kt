@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.ui
+package com.example.todoappsandbox.ui.list
 
 import android.view.LayoutInflater
 import android.view.View

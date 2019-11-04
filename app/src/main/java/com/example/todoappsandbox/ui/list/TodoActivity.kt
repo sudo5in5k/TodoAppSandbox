@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.ui
+package com.example.todoappsandbox.ui.list
 
 import android.app.Activity
 import android.content.Intent
@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.container.*
 
-class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoEvents {
+class TodoActivity : AppCompatActivity(),
+    TodoListAdapter.TodoEvents {
 
     private lateinit var viewModel: TodoViewModel
     private lateinit var adapter: TodoListAdapter
