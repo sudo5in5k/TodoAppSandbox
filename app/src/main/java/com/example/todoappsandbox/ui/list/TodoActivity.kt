@@ -1,6 +1,5 @@
 package com.example.todoappsandbox.ui.list
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -44,13 +43,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            val entity = data?.getParcelableExtra<TodoEntity>(Consts.INTENT) ?: return
-            when (requestCode) {
-                Consts.INTENT_FROM_FAB -> viewModel.insertTodo(entity)
-                Consts.INTENT_FROM_VIEW -> Unit
-            }
-        }
+        viewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDeleteClicked(entity: TodoEntity) {
@@ -58,7 +51,9 @@ class TodoActivity : AppCompatActivity(),
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
-        //val intent = Intent(this, )
+        val intent =
+            Intent(this, NewTodoActivity::class.java).also { it.putExtra(Consts.INTENT, entity) }
+        startActivityForResult(intent, Consts.INTENT_FROM_VIEW)
     }
 
 }

@@ -6,6 +6,8 @@ import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
@@ -14,19 +16,34 @@ import kotlinx.android.synthetic.main.activity_new_todo.*
 class NewTodoActivity : AppCompatActivity() {
 
     private var todoEntity: TodoEntity? = null
+    lateinit var viewModel: NewTodoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_todo)
 
-        val intent = intent
+        viewModel = ViewModelProvider(
+            this,
+            NewTodoFactory(this.application)
+        ).get(NewTodoViewModel::class.java)
+
         if (intent != null && intent.hasExtra(Consts.INTENT)) {
             val entity = intent.getParcelableExtra<TodoEntity>(Consts.INTENT)
             todoEntity = entity
-            register_title.text = entity?.title as Editable
-            register_description.text = entity.description as Editable
+
+            viewModel.setTodo(entity)
+            viewModel.todoDescription.observe(this, Observer {
+                register_description.text = Editable.Factory.getInstance().newEditable(it)
+            })
+            viewModel.todoTitle.observe(this, Observer {
+                register_title.text = Editable.Factory.getInstance().newEditable(it)
+            })
         }
-        title = if (todoEntity != null) "編集" else "新規"
+
+        viewModel.setMenuTitle(todoEntity)
+        viewModel.activityTitle.observe(this, Observer {
+            title = it
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
