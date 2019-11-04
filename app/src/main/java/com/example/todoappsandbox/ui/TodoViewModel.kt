@@ -9,7 +9,7 @@ import com.example.todoappsandbox.repository.db.TodoEntity
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: TodoRepository = TodoRepository(application)
-    private val allTodos: LiveData<List<TodoEntity>> = repository.getAllTodos()
+    private val allTodos = repository.getAllTodos()
 
     fun insertTodo(entity: TodoEntity) {
         repository.insertTodo(entity)

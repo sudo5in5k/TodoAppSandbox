@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.repository.db.TodoEntity
@@ -26,7 +26,10 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoEvents {
         todo_list_recycler.layoutManager = LinearLayoutManager(this)
         todo_list_recycler.adapter = adapter
 
-        viewModel = ViewModelProviders.of(this).get(TodoViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            TodoListFactory(this.application)
+        ).get(TodoViewModel::class.java)
         viewModel.getAllTodoList().observe(this, Observer {
             adapter.setAllTodos(it)
         })
