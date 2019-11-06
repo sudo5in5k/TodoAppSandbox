@@ -1,6 +1,5 @@
 package com.example.todoappsandbox.repository.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao

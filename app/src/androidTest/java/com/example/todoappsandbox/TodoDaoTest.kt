@@ -47,4 +47,32 @@ class TodoDaoTest {
             }
         }
     }
+
+    @Test
+    fun verifyDelete() {
+        val entity = TodoEntity(id = null, title = "hoge", description = "")
+        val deleteEntity = TodoEntity(id = 1, title = "hoge", description = "")
+        runBlocking {
+            launch(Dispatchers.IO) {
+                dao.insert(entity)
+                dao.delete(deleteEntity)
+                val data = dao.getAll()
+                assertEquals(true, data.isEmpty())
+            }
+        }
+    }
+
+    @Test
+    fun verifyUpdate() {
+        val entity = TodoEntity(id = null, title = "hoge", description = "")
+        val updateEntity = TodoEntity(id = 1, title = "huga", description = "foo")
+        runBlocking {
+            launch(Dispatchers.IO) {
+                dao.insert(entity)
+                dao.update(updateEntity)
+                val data = dao.getAll()
+                assertEquals(updateEntity.title, data[0].title)
+            }
+        }
+    }
 }
