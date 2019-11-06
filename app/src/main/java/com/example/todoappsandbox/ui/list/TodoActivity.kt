@@ -47,6 +47,10 @@ class TodoActivity : AppCompatActivity(),
         viewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onCheckClicked(entity: TodoEntity) {
+        return
+    }
+
     override fun onDeleteClicked(entity: TodoEntity) {
         viewModel.deleteTodo(entity)
         viewModel.loadAllTodos()

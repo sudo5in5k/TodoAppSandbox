@@ -13,17 +13,22 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
+        <CheckBox
+            android:id="@+id/check"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
         <ImageView
             android:id="@+id/delete_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:contentDescription="null"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@android:drawable/ic_menu_delete" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/check"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/delete_image"
             android:layout_toLeftOf="@id/delete_image"

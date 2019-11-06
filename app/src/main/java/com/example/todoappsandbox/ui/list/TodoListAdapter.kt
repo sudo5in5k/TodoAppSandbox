@@ -1,5 +1,7 @@
 package com.example.todoappsandbox.ui.list
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +46,25 @@ class TodoListAdapter(todoEvents: TodoEvents) : RecyclerView.Adapter<TodoListAda
             itemView.setOnClickListener {
                 listener.onTodoClicked(entity)
             }
+            itemView.check.setOnClickListener {
+                if (itemView.check.isChecked) {
+                    itemView.title_text.also { tv ->
+                        tv.setTextColor(Color.LTGRAY)
+                        tv.paint.also { paint ->
+                            paint.flags = tv.title_text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                            paint.isAntiAlias = true
+                        }
+                    }
+                } else {
+                    itemView.title_text.also { tv ->
+                        tv.setTextColor(Color.BLACK)
+                        tv.paint.also { paint ->
+                            paint.flags = Paint.ANTI_ALIAS_FLAG
+                            paint.isAntiAlias = false
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -51,6 +72,7 @@ class TodoListAdapter(todoEvents: TodoEvents) : RecyclerView.Adapter<TodoListAda
      * Define touch event callbacks
      */
     interface TodoEvents {
+        fun onCheckClicked(entity: TodoEntity)
         fun onDeleteClicked(entity: TodoEntity)
         fun onTodoClicked(entity: TodoEntity)
     }
