@@ -31,7 +31,8 @@ class TodoActivity : AppCompatActivity(),
             this,
             TodoListFactory(this.application)
         ).get(TodoViewModel::class.java)
-        viewModel.getAllTodoList().observe(this, Observer {
+        viewModel.loadAllTodos()
+        viewModel.allTodos.observe(this, Observer {
             adapter.setAllTodos(it)
         })
 
@@ -48,6 +49,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         viewModel.deleteTodo(entity)
+        viewModel.loadAllTodos()
     }
 
     override fun onTodoClicked(entity: TodoEntity) {

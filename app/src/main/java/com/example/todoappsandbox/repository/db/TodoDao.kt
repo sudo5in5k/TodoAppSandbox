@@ -16,5 +16,5 @@ interface TodoDao {
     suspend fun update(entity: TodoEntity)
 
     @Query("SELECT * FROM todo ORDER BY id DESC")
-    fun getAll(): LiveData<List<TodoEntity>>
+    suspend fun getAll(): List<TodoEntity>
 }
