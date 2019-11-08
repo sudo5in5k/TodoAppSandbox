@@ -60,3 +60,6 @@ dependencies {
     def material_version = "1.0.0"
     implementation "com.google.android.material:material:$material_version"
 }
+
+// Firebase
+apply plugin: 'com.google.gms.google-services'
