@@ -9,10 +9,11 @@ import com.example.todoappsandbox.repository.TodoRepository
 import com.example.todoappsandbox.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
 
-class TodoViewModel(application: Application) : AndroidViewModel(application) {
+class TodoViewModel(val app: Application) : AndroidViewModel(app) {
 
-    private val repository: TodoRepository = TodoRepository(application)
+    private val repository: TodoRepository = TodoRepository(app)
     val allTodos = MutableLiveData<List<TodoEntity>>()
+    val isCheckedState = MutableLiveData<Boolean>()
 
     private fun insertTodo(entity: TodoEntity) {
         repository.insertTodo(entity)
@@ -24,6 +25,13 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     fun deleteTodo(entity: TodoEntity) {
         repository.deleteTodo(entity)
+    }
+
+    fun checkTodo(entity: TodoEntity) {
+        val nowChecked = !entity.isChecked
+        isCheckedState.postValue(nowChecked)
+        updateTodo(TodoEntity(entity.id, entity.title, entity.description, nowChecked))
+        loadAllTodos()
     }
 
     fun loadAllTodos() {

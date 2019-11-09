@@ -1,57 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    card:cardCornerRadius="5dp"
-    card:cardElevation="5dp"
-    card:cardUseCompatPadding="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <data>
+
+        <import type="com.example.todoappsandbox.R" />
+
+        <variable
+            name="todo"
+            type="com.example.todoappsandbox.repository.db.TodoEntity" />
+
+        <variable
+            name="viewModel"
+            type="com.example.todoappsandbox.ui.list.TodoViewModel" />
+
+        <variable
+            name="event"
+            type="com.example.todoappsandbox.ui.list.TodoListAdapter.TodoCrudEvent" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        card:cardCornerRadius="5dp"
+        card:cardElevation="5dp"
+        card:cardUseCompatPadding="true">
 
-        <CheckBox
-            android:id="@+id/check"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-
-        <ImageView
-            android:id="@+id/delete_image"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="null"
-            android:src="@android:drawable/ic_menu_delete" />
+            android:padding="10dp">
 
-        <LinearLayout
-            android:layout_toRightOf="@id/check"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/delete_image"
-            android:layout_toLeftOf="@id/delete_image"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/title_text"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/check"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
-                tools:text="Title" />
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:checked="@{todo.checked}"
+                android:onClick="@{() -> viewModel.checkTodo(todo)}" />
 
-            <TextView
-                android:id="@+id/description_text"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/delete_image"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                tools:text="Description" />
-        </LinearLayout>
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="null"
+                android:onClick="@{() -> event.onDeleteClicked(todo)}"
+                android:src="@android:drawable/ic_menu_delete" />
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/check"
+                android:onClick="@{() -> event.onTodoClicked(todo)}"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{todo.title}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:changeEffect="@{todo.checked}"
+                    tools:text="Title" />
+
+                <TextView
+                    android:id="@+id/description_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{todo.description}"
+                    tools:text="Description" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

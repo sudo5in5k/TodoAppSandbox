@@ -20,8 +20,8 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class TodoDaoTest {
 
-    lateinit var db: TodoDB
-    lateinit var dao: TodoDao
+    private lateinit var db: TodoDB
+    private lateinit var dao: TodoDao
 
     @Before
     fun setup() {
