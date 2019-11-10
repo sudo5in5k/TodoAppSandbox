@@ -1,24 +1,24 @@
 package com.example.todoappsandbox.ui.list.page
 
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.todoappsandbox.R
 import org.hamcrest.Matchers
 
 object NewTodoPage {
 
     fun edit(): NewTodoPage {
-        val title = Espresso.onView(ViewMatchers.withId(R.id.register_title))
+        val title = Espresso.onView(withId(R.id.register_title))
         title.perform(
-            ViewActions.replaceText(PageConst.INPUT_TITLE),
-            ViewActions.closeSoftKeyboard()
+            replaceText(PageConst.INPUT_TITLE),
+            closeSoftKeyboard()
         )
 
-        val description = Espresso.onView(ViewMatchers.withId(R.id.register_description))
+        val description = Espresso.onView(withId(R.id.register_description))
         description.perform(
-            ViewActions.replaceText(PageConst.INPUT_DESCRIPTION),
-            ViewActions.closeSoftKeyboard()
+            replaceText(PageConst.INPUT_DESCRIPTION),
+            closeSoftKeyboard()
         )
         return NewTodoPage
     }
@@ -26,18 +26,18 @@ object NewTodoPage {
     fun save(): TodoListPage {
         val saveMenu = Espresso.onView(
             Matchers.allOf(
-                ViewMatchers.withId(R.id.save), ViewMatchers.withContentDescription("SAVE"),
+                withId(R.id.save), withContentDescription("SAVE"),
                 childAtPosition(
                     childAtPosition(
-                        ViewMatchers.withId(R.id.action_bar),
+                        withId(R.id.action_bar),
                         1
                     ),
                     0
                 ),
-                ViewMatchers.isDisplayed()
+                isDisplayed()
             )
         )
-        saveMenu.perform(ViewActions.click())
+        saveMenu.perform(click())
         return TodoListPage
     }
 }
