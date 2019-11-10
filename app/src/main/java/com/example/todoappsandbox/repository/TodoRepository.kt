@@ -1,21 +1,12 @@
 package com.example.todoappsandbox.repository
 
-import android.app.Application
-import com.example.todoappsandbox.repository.db.TodoDB
 import com.example.todoappsandbox.repository.db.TodoDao
 import com.example.todoappsandbox.repository.db.TodoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class TodoRepository(application: Application) {
-
-    private val todoDao: TodoDao
-
-    init {
-        val db = TodoDB.getInstance(application.applicationContext)
-        todoDao = db.todoDao()
-    }
+class TodoRepository(private val todoDao: TodoDao) {
 
     fun insertTodo(entity: TodoEntity) = runBlocking {
         launch(Dispatchers.IO) {

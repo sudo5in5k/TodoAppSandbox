@@ -1,17 +1,15 @@
 package com.example.todoappsandbox.ui.list
 
 import android.app.Activity.RESULT_OK
-import android.app.Application
 import android.content.Intent
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.todoappsandbox.repository.TodoRepository
 import com.example.todoappsandbox.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
 
-class TodoViewModel(val app: Application) : AndroidViewModel(app) {
+class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
-    private val repository: TodoRepository = TodoRepository(app)
     val allTodos = MutableLiveData<List<TodoEntity>>()
     val isCheckedState = MutableLiveData<Boolean>()
 

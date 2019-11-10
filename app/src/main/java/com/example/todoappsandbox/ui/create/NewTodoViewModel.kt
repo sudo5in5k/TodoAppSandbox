@@ -1,18 +1,15 @@
 package com.example.todoappsandbox.ui.create
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.todoappsandbox.repository.TodoRepository
 import com.example.todoappsandbox.repository.db.TodoEntity
 
-class NewTodoViewModel(application: Application) : AndroidViewModel(application) {
+class NewTodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     val activityTitle = MutableLiveData<String>()
     val todoTitle = MutableLiveData<String>()
     val todoDescription = MutableLiveData<String>()
-
-    val repository = TodoRepository(application)
 
     private fun setTodoTitle(entity: TodoEntity?) {
         todoTitle.value = entity?.title
