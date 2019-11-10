@@ -26,6 +26,9 @@ android {
     dataBinding {
         enabled true
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 androidExtensions {
@@ -70,6 +73,17 @@ dependencies {
     // core-testing
     def core_testing_version = "2.1.0"
     testImplementation "androidx.arch.core:core-testing:$core_testing_version"
+
+
+    // ui test extensions for espresso
+    def junit_ktx_version = "1.1.1"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$junit_ktx_version"
+
+    def test_rules_version = "1.2.0"
+    androidTestImplementation "androidx.test:rules:$test_rules_version"
+
+    def core_ktx_version = "1.2.0"
+    androidTestImplementation "androidx.test:core-ktx:$core_ktx_version"
 }
 
 // Firebase
