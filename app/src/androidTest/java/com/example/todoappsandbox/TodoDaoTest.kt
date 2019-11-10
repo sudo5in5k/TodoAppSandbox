@@ -75,4 +75,18 @@ class TodoDaoTest {
             }
         }
     }
+
+    @Test
+    fun verifyChecked() {
+        val entity = TodoEntity(id = null, title = "hoge", description = "", isChecked = false)
+        val updateEntity = TodoEntity(id = 1, title = "hoge", description = "", isChecked = true)
+        runBlocking {
+            launch(Dispatchers.IO) {
+                dao.insert(entity)
+                dao.update(updateEntity)
+                val data = dao.getAll()
+                assertEquals(updateEntity.isChecked, data[0].isChecked)
+            }
+        }
+    }
 }
