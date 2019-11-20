@@ -16,7 +16,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: copy
-      run: ls -a
-
+    - name: copy google-service
+      run: echo ${{ secrets.GOOGLE_SERVICE_JSON }} | base64 --decode --ignore-garbage > ./app/google-service.json
+    - name: build
+      run: ./gradlew build
 
