@@ -17,6 +17,6 @@ jobs:
       with:
         java-version: 1.8
     - name: copy
-      run: echo ${{HOME}}
+      run: ls -a
 
 
