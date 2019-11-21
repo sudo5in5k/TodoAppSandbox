@@ -22,4 +22,6 @@ jobs:
       run: echo $GOOGLE_SERVICE | base64 --decode --ignore-garbage > ./app/google-services.json
     - name: build
       run: ./gradlew build
+    - name: unit test
+      run: ./gradlew test
 
