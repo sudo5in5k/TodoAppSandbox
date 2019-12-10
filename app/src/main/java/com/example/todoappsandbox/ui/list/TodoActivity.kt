@@ -2,6 +2,7 @@ package com.example.todoappsandbox.ui.list
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -16,18 +17,13 @@ import com.example.todoappsandbox.utils.Consts
 class TodoActivity : AppCompatActivity(),
     TodoListAdapter.TodoCrudEvent {
 
-    private lateinit var viewModel: TodoViewModel
+    private val viewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
     private lateinit var adapter: TodoListAdapter
 
     private lateinit var activityMainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(
-            this,
-            TodoListFactory(this.application)
-        ).get(TodoViewModel::class.java)
 
         adapter = TodoListAdapter(this, viewModel)
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,16 +17,11 @@ import kotlinx.android.synthetic.main.activity_new_todo.*
 class NewTodoActivity : AppCompatActivity() {
 
     private var todoEntity: TodoEntity? = null
-    lateinit var viewModel: NewTodoViewModel
+    private val viewModel: NewTodoViewModel by viewModels { NewTodoFactory(this.application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_todo)
-
-        viewModel = ViewModelProvider(
-            this,
-            NewTodoFactory(this.application)
-        ).get(NewTodoViewModel::class.java)
 
         if (intent != null && intent.hasExtra(Consts.INTENT)) {
             val entity = intent.getParcelableExtra<TodoEntity>(Consts.INTENT)
