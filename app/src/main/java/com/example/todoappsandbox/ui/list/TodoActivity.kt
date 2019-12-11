@@ -1,12 +1,15 @@
 package com.example.todoappsandbox.ui.list
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.databinding.ActivityMainBinding
@@ -54,6 +57,32 @@ class TodoActivity : AppCompatActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search, menu)
+        val searchMenu = menu?.findItem(R.id.action_search)
+
+        val searchManager =
+            getSystemService(Context.SEARCH_SERVICE) as? SearchManager ?: return false
+
+        val searchView = searchMenu?.actionView as? SearchView ?: return false
+        searchView.apply {
+            maxWidth = Int.MAX_VALUE
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    adapter.filtering().filter(p0)
+                    return false
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    adapter.filtering().filter(p0)
+                    return false
+                }
+            })
+        }
+        return true
     }
 
     override fun onDeleteClicked(entity: TodoEntity) {
