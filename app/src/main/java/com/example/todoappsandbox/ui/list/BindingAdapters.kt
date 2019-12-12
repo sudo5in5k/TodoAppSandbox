@@ -6,18 +6,14 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("changeEffect")
-fun TextView.changeEffect(checked: Boolean) {
+fun TextView.changeEffect(checked: Boolean) = apply {
     if (checked) {
-        this.apply {
-            setTextColor(Color.LTGRAY)
-            paint.flags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            paint.isAntiAlias = true
-        }
+        setTextColor(Color.LTGRAY)
+        paint.flags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        paint.isAntiAlias = true
     } else {
-        this.apply {
-            setTextColor(Color.BLACK)
-            paint.flags = Paint.ANTI_ALIAS_FLAG
-            paint.isAntiAlias = false
-        }
+        setTextColor(Color.BLACK)
+        paint.flags = Paint.ANTI_ALIAS_FLAG
+        paint.isAntiAlias = false
     }
 }
