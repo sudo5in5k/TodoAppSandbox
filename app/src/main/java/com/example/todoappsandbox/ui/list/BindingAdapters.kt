@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 object BindingAdapters {
 
     @JvmStatic
-    @BindingAdapter("app:changeEffect")
+    @BindingAdapter("changeEffect")
     fun invoke(textView: TextView, checked: Boolean) {
         if (checked) {
             textView.apply {

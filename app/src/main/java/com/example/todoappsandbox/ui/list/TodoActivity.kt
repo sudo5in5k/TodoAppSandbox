@@ -18,7 +18,7 @@ import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
 
 class TodoActivity : AppCompatActivity(),
-    TodoListAdapter.TodoCrudEvent {
+    TodoListAdapter.TodoTouchEvent {
 
     private val viewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
     private lateinit var adapter: TodoListAdapter
@@ -94,6 +94,10 @@ class TodoActivity : AppCompatActivity(),
         val intent =
             Intent(this, NewTodoActivity::class.java).also { it.putExtra(Consts.INTENT, entity) }
         startActivityForResult(intent, Consts.INTENT_FROM_VIEW)
+    }
+
+    override fun onCheckClicked(entity: TodoEntity) {
+        viewModel.checkTodo(entity)
     }
 
     fun onFabClicked() {

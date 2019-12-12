@@ -8,7 +8,7 @@ import com.example.todoappsandbox.databinding.TodoItemBinding
 import com.example.todoappsandbox.repository.db.TodoEntity
 import java.util.*
 
-class TodoListAdapter(todoCrudEvent: TodoCrudEvent, val viewModel: TodoViewModel) :
+class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewModel) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     private var todos: List<TodoEntity> = arrayListOf()
@@ -18,7 +18,7 @@ class TodoListAdapter(todoCrudEvent: TodoCrudEvent, val viewModel: TodoViewModel
      */
     private var filteredTodos: List<TodoEntity> = arrayListOf()
 
-    private val events = todoCrudEvent
+    private val events = todoTouchEvent
     private var isChecked = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -82,10 +82,11 @@ class TodoListAdapter(todoCrudEvent: TodoCrudEvent, val viewModel: TodoViewModel
     class ViewHolder(val binding: TodoItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     /**
-     * Define touch event callbacks for activity
+     * Touch event callbacks for activity
      */
-    interface TodoCrudEvent {
+    interface TodoTouchEvent {
         fun onDeleteClicked(entity: TodoEntity)
         fun onTodoClicked(entity: TodoEntity)
+        fun onCheckClicked(entity: TodoEntity)
     }
 }

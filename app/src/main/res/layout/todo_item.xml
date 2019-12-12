@@ -18,7 +18,7 @@
 
         <variable
             name="event"
-            type="com.example.todoappsandbox.ui.list.TodoListAdapter.TodoCrudEvent" />
+            type="com.example.todoappsandbox.ui.list.TodoListAdapter.TodoTouchEvent" />
 
     </data>
 
@@ -41,7 +41,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:checked="@{todo.checked}"
-                android:onClick="@{() -> viewModel.checkTodo(todo)}" />
+                android:onClick="@{() -> event.onCheckClicked(todo)}" />
 
             <ImageView
                 android:id="@+id/delete_image"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:contentDescription="null"
+                android:contentDescription="@string/default_null_description"
                 android:onClick="@{() -> event.onDeleteClicked(todo)}"
                 android:src="@android:drawable/ic_menu_delete" />
 
