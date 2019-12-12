@@ -19,7 +19,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="TITLE"
+                android:hint="@string/hint_title"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textStyle="bold" />
 
@@ -37,8 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
-                android:hint="DESCRIPTION"
+                android:hint="@string/hint_description"
+                android:importantForAutofill="no"
                 android:inputType="textMultiLine|textFilter" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

@@ -16,9 +16,9 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class TodoRepositoryTest {
 
-    lateinit var db: TodoDB
-    lateinit var dao: TodoDao
-    lateinit var repository: TodoRepository
+    private lateinit var db: TodoDB
+    private lateinit var dao: TodoDao
+    private lateinit var repository: TodoRepository
 
     @Before
     fun setup() {

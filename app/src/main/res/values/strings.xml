@@ -2,4 +2,7 @@
     <string name="app_name">TodoAppSandbox</string>
     <string name="search_title">Search</string>
     <string name="default_null_description">null</string>
+    <string name="hint_title">title</string>
+    <string name="hint_description">description</string>
+    <string name="menu_save">save</string>
 </resources>

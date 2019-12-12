@@ -21,7 +21,7 @@ class TodoViewModelTest {
     val testRule = InstantTaskExecutorRule()
 
     private val repository = mock<TodoRepository>()
-    lateinit var viewModel: TodoViewModel
+    private lateinit var viewModel: TodoViewModel
 
     @Before
     fun setup() {
