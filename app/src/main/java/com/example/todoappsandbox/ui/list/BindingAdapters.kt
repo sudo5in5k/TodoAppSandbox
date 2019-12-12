@@ -5,23 +5,19 @@ import android.graphics.Paint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
-object BindingAdapters {
-
-    @JvmStatic
-    @BindingAdapter("changeEffect")
-    fun invoke(textView: TextView, checked: Boolean) {
-        if (checked) {
-            textView.apply {
-                setTextColor(Color.LTGRAY)
-                paint.flags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                paint.isAntiAlias = true
-            }
-        } else {
-            textView.apply {
-                setTextColor(Color.BLACK)
-                paint.flags = Paint.ANTI_ALIAS_FLAG
-                paint.isAntiAlias = false
-            }
+@BindingAdapter("changeEffect")
+fun TextView.changeEffect(checked: Boolean) {
+    if (checked) {
+        this.apply {
+            setTextColor(Color.LTGRAY)
+            paint.flags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            paint.isAntiAlias = true
+        }
+    } else {
+        this.apply {
+            setTextColor(Color.BLACK)
+            paint.flags = Paint.ANTI_ALIAS_FLAG
+            paint.isAntiAlias = false
         }
     }
 }
