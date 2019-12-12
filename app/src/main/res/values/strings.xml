@@ -5,4 +5,5 @@
     <string name="hint_title">title</string>
     <string name="hint_description">description</string>
     <string name="menu_save">save</string>
+    <string name="default_top_text">Let\'s push add button, and add todos into this list.</string>
 </resources>

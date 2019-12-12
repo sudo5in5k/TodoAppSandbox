@@ -12,6 +12,7 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     val allTodos = MutableLiveData<List<TodoEntity>>()
     val isCheckedState = MutableLiveData<Boolean>()
+    val topVisibility = MutableLiveData<Boolean>()
 
     private fun insertTodo(entity: TodoEntity) {
         repository.insertTodo(entity)
@@ -34,6 +35,14 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     fun loadAllTodos() {
         allTodos.postValue(repository.getAllTodos())
+    }
+
+    fun switchVisibilityByTodos() {
+        if (allTodos.value.isNullOrEmpty()) {
+            topVisibility.postValue(true)
+        } else {
+            topVisibility.postValue(false)
+        }
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

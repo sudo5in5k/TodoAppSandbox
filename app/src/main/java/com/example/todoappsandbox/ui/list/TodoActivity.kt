@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +48,7 @@ class TodoActivity : AppCompatActivity(),
         viewModel.loadAllTodos()
         viewModel.allTodos.observe(this, Observer {
             adapter.setAllTodos(it)
+            viewModel.switchVisibilityByTodos()
         })
 
         viewModel.isCheckedState.observe(this, Observer {

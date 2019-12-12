@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.example.todoappsandbox.ui.list.TodoViewModel" />
@@ -18,6 +20,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.list.TodoActivity">
+
+        <LinearLayout
+            android:id="@+id/default_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.topVisibility.booleanValue() ? View.VISIBLE : View.INVISIBLE}"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/default_null_description"
+                android:src="@drawable/todo_top_img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/default_top_text" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todo_list_recycler"
