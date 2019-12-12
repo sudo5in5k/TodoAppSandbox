@@ -4,7 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +23,7 @@ class TodoActivity : AppCompatActivity(),
 
     private val viewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
     private lateinit var adapter: TodoListAdapter
+    private lateinit var searchView: SearchView
 
     private lateinit var activityMainBinding: ActivityMainBinding
 
@@ -68,13 +69,16 @@ class TodoActivity : AppCompatActivity(),
         val searchManager =
             getSystemService(Context.SEARCH_SERVICE) as? SearchManager ?: return false
 
-        val searchView = searchMenu?.actionView as? SearchView ?: return false
+        searchView = searchMenu?.actionView as? SearchView ?: return false
         searchView.apply {
+            inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            isSubmitButtonEnabled = false
             maxWidth = Int.MAX_VALUE
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     adapter.filtering().filter(p0)
+                    clearFocus()
                     return false
                 }
 
@@ -88,21 +92,25 @@ class TodoActivity : AppCompatActivity(),
     }
 
     override fun onDeleteClicked(entity: TodoEntity) {
+        searchView.onActionViewCollapsed()
         viewModel.deleteTodo(entity)
         viewModel.loadAllTodos()
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
+        searchView.onActionViewCollapsed()
         val intent =
             Intent(this, NewTodoActivity::class.java).also { it.putExtra(Consts.INTENT, entity) }
         startActivityForResult(intent, Consts.INTENT_FROM_VIEW)
     }
 
     override fun onCheckClicked(entity: TodoEntity) {
+        searchView.onActionViewCollapsed()
         viewModel.checkTodo(entity)
     }
 
     fun onFabClicked() {
+        searchView.onActionViewCollapsed()
         val intent = Intent(this, NewTodoActivity::class.java)
         startActivityForResult(intent, Consts.INTENT_FROM_FAB)
     }
