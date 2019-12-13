@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.databinding.ActivityMainBinding
@@ -23,23 +23,23 @@ import com.example.todoappsandbox.utils.Consts
 class TodoActivity : AppCompatActivity(),
     TodoListAdapter.TodoTouchEvent {
 
-    private val viewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
+    private val todoViewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
+    private val dialogViewModel: DialogViewModel by viewModels { ViewModelProvider.NewInstanceFactory() }
     private lateinit var adapter: TodoListAdapter
     private lateinit var searchView: SearchView
 
     private lateinit var activityMainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("ushi", "oncreate")
         super.onCreate(savedInstanceState)
-        adapter = TodoListAdapter(this, viewModel)
+        adapter = TodoListAdapter(this, todoViewModel)
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         activityMainBinding.lifecycleOwner = this
 
         activityMainBinding.also {
             it.activity = this@TodoActivity
-            it.viewModel = viewModel
+            it.viewModel = todoViewModel
         }
 
         activityMainBinding.todoListRecycler.also {
@@ -48,20 +48,24 @@ class TodoActivity : AppCompatActivity(),
             it.setHasFixedSize(true)
         }
 
-        viewModel.loadAllTodos()
-        viewModel.allTodos.observe(this, Observer {
+        todoViewModel.loadAllTodos()
+        todoViewModel.allTodos.observe(this, Observer {
             adapter.setAllTodos(it)
-            viewModel.switchVisibilityByTodos()
+            todoViewModel.switchVisibilityByTodos()
         })
 
-        viewModel.isCheckedState.observe(this, Observer {
+        todoViewModel.isCheckedState.observe(this, Observer {
             adapter.setIsChecked(it)
+        })
+
+        dialogViewModel.deleteConfirmYes.observe(this, Observer {
+            Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()
         })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        viewModel.handleActivityResult(requestCode, resultCode, data)
+        todoViewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -95,7 +99,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        DeleteConfirmDialog().show(supportFragmentManager, "tag")
+        DeleteConfirmDialog.newInstance().show(supportFragmentManager, "")
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
@@ -107,7 +111,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onCheckClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        viewModel.checkTodo(entity)
+        todoViewModel.checkTodo(entity)
     }
 
     fun onFabClicked() {

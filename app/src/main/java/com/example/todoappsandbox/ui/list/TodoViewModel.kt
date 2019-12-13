@@ -14,11 +14,6 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
     val isCheckedState = MutableLiveData<Boolean>()
     val topVisibility = MutableLiveData<Boolean>()
 
-    /**
-     * use theirs for [DeleteConfirmDialog]
-     */
-    val deleteConfirmYes = MutableLiveData<Boolean>()
-
     private fun insertTodo(entity: TodoEntity) {
         repository.insertTodo(entity)
     }
