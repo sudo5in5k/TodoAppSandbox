@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -28,8 +30,8 @@ class TodoActivity : AppCompatActivity(),
     private lateinit var activityMainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("ushi", "oncreate")
         super.onCreate(savedInstanceState)
-
         adapter = TodoListAdapter(this, viewModel)
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -93,8 +95,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        viewModel.deleteTodo(entity)
-        viewModel.loadAllTodos()
+        DeleteConfirmDialog().show(supportFragmentManager, "tag")
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
