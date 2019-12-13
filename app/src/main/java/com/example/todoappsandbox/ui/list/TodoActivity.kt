@@ -2,17 +2,16 @@ package com.example.todoappsandbox.ui.list
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.databinding.ActivityMainBinding
@@ -24,10 +23,8 @@ class TodoActivity : AppCompatActivity(),
     TodoListAdapter.TodoTouchEvent {
 
     private val todoViewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
-    private val dialogViewModel: DialogViewModel by viewModels { ViewModelProvider.NewInstanceFactory() }
     private lateinit var adapter: TodoListAdapter
     private lateinit var searchView: SearchView
-
     private lateinit var activityMainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +53,6 @@ class TodoActivity : AppCompatActivity(),
 
         todoViewModel.isCheckedState.observe(this, Observer {
             adapter.setIsChecked(it)
-        })
-
-        dialogViewModel.deleteConfirmYes.observe(this, Observer {
-            Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -99,7 +92,12 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        DeleteConfirmDialog.newInstance().show(supportFragmentManager, "")
+        DeleteConfirmDialog.newInstance().apply {
+            onPositiveListener = DialogInterface.OnClickListener { _, _ ->
+                todoViewModel.deleteTodo(entity)
+                todoViewModel.loadAllTodos()
+            }
+        }.show(supportFragmentManager, null)
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
@@ -119,5 +117,4 @@ class TodoActivity : AppCompatActivity(),
         val intent = Intent(this, NewTodoActivity::class.java)
         startActivityForResult(intent, Consts.INTENT_FROM_FAB)
     }
-
 }
