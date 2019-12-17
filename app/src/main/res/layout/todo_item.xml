@@ -45,16 +45,18 @@
 
             <ImageView
                 android:id="@+id/delete_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:background="@drawable/delete_icon_background"
                 android:contentDescription="@string/default_null_description"
                 android:onClick="@{() -> event.onDeleteClicked(todo)}"
+                android:scaleType="centerCrop"
                 android:src="@android:drawable/ic_menu_delete" />
 
             <LinearLayout
-                android:layout_width="300dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/check"
