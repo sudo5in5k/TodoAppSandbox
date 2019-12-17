@@ -25,7 +25,7 @@ class NewTodoViewModel(val repository: TodoRepository) : ViewModel() {
     }
 
     fun setMenuTitle(todoEntity: TodoEntity?) {
-        activityTitle.value = if (todoEntity != null) "編集" else "新規"
+        activityTitle.value = if (todoEntity != null) "Edit" else "New"
     }
 
 }
