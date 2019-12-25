@@ -1,6 +1,5 @@
 package com.example.todoappsandbox.ui.list
 
-
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest

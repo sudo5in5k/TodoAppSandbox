@@ -63,5 +63,4 @@ class NewTodoActivity : AppCompatActivity() {
         setResult(RESULT_OK, intent)
         finish()
     }
-
 }

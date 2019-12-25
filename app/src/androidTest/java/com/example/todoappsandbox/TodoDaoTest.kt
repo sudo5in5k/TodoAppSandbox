@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.todoappsandbox.repository.db.TodoDB
 import com.example.todoappsandbox.repository.db.TodoDao
 import com.example.todoappsandbox.repository.db.TodoEntity
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -15,7 +16,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class TodoDaoTest {
