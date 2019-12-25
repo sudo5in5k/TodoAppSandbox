@@ -41,7 +41,7 @@ class TodoViewModelTest {
 
         val testEntity = TodoEntity(null, "hoge", "piyo")
         `when`(repository.getAllTodos()).thenReturn(listOf(testEntity))
-        
+
         viewModel.loadAllTodos()
         verify(observer).onChanged(listOf(testEntity))
     }

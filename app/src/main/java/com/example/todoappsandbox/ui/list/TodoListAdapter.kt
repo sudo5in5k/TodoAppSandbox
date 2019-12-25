@@ -6,7 +6,7 @@ import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoappsandbox.databinding.TodoItemBinding
 import com.example.todoappsandbox.repository.db.TodoEntity
-import java.util.*
+import java.util.Locale
 
 class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewModel) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
