@@ -66,6 +66,7 @@ class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewMod
         }
     }
 
+
     private fun filteringTodosByQuery(query: CharSequence?): List<TodoEntity> {
         filteredTodos = if (query.isNullOrEmpty() || query.isNullOrBlank()) {
             todos
