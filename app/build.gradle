@@ -37,6 +37,7 @@ android {
         xmlReport true
         textReport false
         htmlReport false
+        checkReleaseBuilds false
         ignore 'TypographyQuotes'
     }
 }
