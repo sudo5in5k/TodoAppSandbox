@@ -35,7 +35,8 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/default_null_description"
-                android:src="@drawable/todo_top_img" />
+                android:src="@drawable/todo_top_img"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
