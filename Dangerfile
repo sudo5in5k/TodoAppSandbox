@@ -34,7 +34,9 @@ checkstyle_format.report 'app/build/reports/ktlint/ktlintMainSourceSetCheck.xml'
 ###
 # Android Lint
 ###
+lint_report_file = 'app/build/reports/lint-results.xml'
 android_lint.gradle_task = 'app:lint'
-android_lint.report_file = 'app/build/reports/lint-results.xml'
+android_lint.report_file = lint_report_file
 android_lint.filtering = true
 android_lint.lint(inline_mode: true)
+checkstyle_format.report lint_report_file
