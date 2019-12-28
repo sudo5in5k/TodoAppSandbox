@@ -31,6 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    lintOptions {
+        abortOnError false
+        ignoreWarnings false
+        xmlReport true
+        textReport false
+        htmlReport false
+        ignore 'TypographyQuotes'
+    }
 }
 
 androidExtensions {
