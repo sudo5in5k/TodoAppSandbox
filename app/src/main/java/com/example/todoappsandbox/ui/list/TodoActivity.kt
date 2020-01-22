@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.todoappsandbox.R
 import com.example.todoappsandbox.databinding.ActivityMainBinding
 import com.example.todoappsandbox.repository.db.TodoEntity
@@ -26,6 +28,28 @@ class TodoActivity : AppCompatActivity(),
     private lateinit var adapter: TodoListAdapter
     private lateinit var searchView: SearchView
     private lateinit var activityMainBinding: ActivityMainBinding
+    private val swipeToDismissCallBack =
+        object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val castViewHolder = viewHolder as? TodoListAdapter.ViewHolder ?: return
+                val entity = castViewHolder.binding.todo ?: return
+                onDeleteClicked(entity)
+            }
+
+            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+                return SWIPE_THRESHOLD
+            }
+        }
+
+    private val itemTouchHelper = ItemTouchHelper(swipeToDismissCallBack)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +67,7 @@ class TodoActivity : AppCompatActivity(),
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(this)
             it.setHasFixedSize(true)
+            itemTouchHelper.attachToRecyclerView(it)
         }
 
         todoViewModel.loadAllTodos()
@@ -116,5 +141,9 @@ class TodoActivity : AppCompatActivity(),
         searchView.onActionViewCollapsed()
         val intent = Intent(this, NewTodoActivity::class.java)
         startActivityForResult(intent, Consts.INTENT_FROM_FAB)
+    }
+
+    companion object {
+        private const val SWIPE_THRESHOLD = 0.2f
     }
 }
