@@ -28,6 +28,7 @@ class TodoActivity : AppCompatActivity(),
     private lateinit var adapter: TodoListAdapter
     private lateinit var searchView: SearchView
     private lateinit var activityMainBinding: ActivityMainBinding
+    private var deleteConfirmDialog: DeleteConfirmDialog? = null
     private val swipeToDismissCallBack =
         object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -76,8 +77,20 @@ class TodoActivity : AppCompatActivity(),
             todoViewModel.switchVisibilityByTodos()
         })
 
-        todoViewModel.isCheckedState.observe(this, Observer {
-            adapter.setIsChecked(it)
+        todoViewModel.entity.observe(this, Observer {
+            if (it != null) {
+                deleteConfirmDialog = DeleteConfirmDialog.newInstance(it).apply {
+                    onPositiveListener = DialogInterface.OnClickListener { _, _ ->
+                        todoViewModel.deleteTodo(it)
+                        todoViewModel.loadAllTodos()
+                        todoViewModel.entity.postValue(null)
+                    }
+                    onNegativeListener = DialogInterface.OnClickListener { _, _ ->
+                        todoViewModel.entity.postValue(null)
+                    }
+                }
+                deleteConfirmDialog?.show(supportFragmentManager, null)
+            }
         })
     }
 
@@ -117,12 +130,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        DeleteConfirmDialog.newInstance().apply {
-            onPositiveListener = DialogInterface.OnClickListener { _, _ ->
-                todoViewModel.deleteTodo(entity)
-                todoViewModel.loadAllTodos()
-            }
-        }.show(supportFragmentManager, null)
+        todoViewModel.setEntity(entity)
     }
 
     override fun onTodoClicked(entity: TodoEntity) {

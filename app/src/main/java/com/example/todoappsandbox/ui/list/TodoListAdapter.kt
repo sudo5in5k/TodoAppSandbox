@@ -19,7 +19,6 @@ class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewMod
     private var filteredTodos: List<TodoEntity> = arrayListOf()
 
     private val events = todoTouchEvent
-    private var isChecked = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = TodoItemBinding.inflate(
@@ -46,10 +45,6 @@ class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewMod
         todos = todoItems
         filteredTodos = todoItems
         notifyDataSetChanged()
-    }
-
-    fun setIsChecked(isChecked: Boolean) {
-        this.isChecked = isChecked
     }
 
     @Suppress("UNCHECKED_CAST")

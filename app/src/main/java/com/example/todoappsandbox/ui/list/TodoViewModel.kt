@@ -11,7 +11,7 @@ import com.example.todoappsandbox.utils.Consts
 class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     val allTodos = MutableLiveData<List<TodoEntity>>()
-    val isCheckedState = MutableLiveData<Boolean>()
+    val entity = MutableLiveData<TodoEntity?>()
     val topVisibility = MutableLiveData<Boolean>()
 
     private fun insertTodo(entity: TodoEntity) {
@@ -28,13 +28,16 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     fun checkTodo(entity: TodoEntity) {
         val nowChecked = !entity.isChecked
-        isCheckedState.postValue(nowChecked)
         updateTodo(TodoEntity(entity.id, entity.title, entity.description, nowChecked))
         loadAllTodos()
     }
 
     fun loadAllTodos() {
         allTodos.postValue(repository.getAllTodos())
+    }
+
+    fun setEntity(entity: TodoEntity) {
+        this.entity.postValue(entity)
     }
 
     fun switchVisibilityByTodos() {

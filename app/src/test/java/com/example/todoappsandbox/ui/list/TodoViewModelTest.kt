@@ -46,18 +46,6 @@ class TodoViewModelTest {
         verify(observer).onChanged(listOf(testEntity))
     }
 
-    @Test
-    fun verifyObserveTodoChecked() {
-        val checkedObserver = viewModel.isCheckedState.testObserver()
-
-        val testEntity = TodoEntity(1, "hoge", "piyo", isChecked = false)
-        `when`(repository.getAllTodos()).thenReturn(listOf(testEntity))
-
-        viewModel.loadAllTodos()
-        viewModel.checkTodo(testEntity)
-        verify(checkedObserver).onChanged(true)
-    }
-
     /**
      * make mock observer for liveData
      */
