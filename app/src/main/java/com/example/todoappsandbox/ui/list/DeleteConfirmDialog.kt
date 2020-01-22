@@ -17,8 +17,8 @@ class DeleteConfirmDialog : DialogFragment() {
         val builder = AlertDialog.Builder(activity)
             .setTitle("Delete")
             .setMessage("This todo was deleted")
-            .setPositiveButton("YES", onPositiveListener)
-            .setNegativeButton("NO", null)
+            .setPositiveButton("OK", onPositiveListener)
+            .setNegativeButton("CANCEL", null)
         return builder.create()
     }
 
