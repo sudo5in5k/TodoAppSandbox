@@ -9,7 +9,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <receiver android:name=".ui.widget.TodoListWidget">
+        <service
+                android:name=".ui.widget.TodoWidgetService"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver android:name=".ui.widget.TodoListWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

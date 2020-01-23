@@ -1,21 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#09C"
+        android:orientation="vertical"
         android:padding="@dimen/widget_margin">
 
-    <TextView
-            android:id="@+id/appwidget_text"
-            android:layout_width="wrap_content"
+    <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:background="#09C"
-            android:contentDescription="@string/appwidget_text"
-            android:text="@string/appwidget_text"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            android:textStyle="bold|italic" />
+            android:background="@color/colorPrimary">
 
-</RelativeLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:gravity="center_vertical|start"
+                android:text="Unchecked Todos"
+                android:textSize="18sp" />
+
+        <ImageView
+                android:id="@+id/reload"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:contentDescription="@string/default_null_description"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/ic_autorenew_white_40dp" />
+    </FrameLayout>
+
+    <ListView
+            android:id="@+id/unchecked_todo_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:divider="#757575"
+            android:dividerHeight="1dp"
+            tools:listitem="@layout/todo_unchecked_item" />
+
+    <LinearLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="All Todos are checked!"
+                android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

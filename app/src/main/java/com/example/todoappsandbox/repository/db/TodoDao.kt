@@ -21,6 +21,6 @@ interface TodoDao {
     @Query("SELECT * FROM todo ORDER BY id DESC")
     suspend fun getAll(): List<TodoEntity>
 
-    @Query("SELECT * FROM todo WHERE isChecked = 1 ORDER BY id DESC")
+    @Query("SELECT * FROM todo WHERE isChecked = 0 ORDER BY id DESC")
     suspend fun getUnchecked(): List<TodoEntity>
 }
