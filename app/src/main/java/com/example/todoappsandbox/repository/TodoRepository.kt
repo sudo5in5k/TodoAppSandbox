@@ -26,6 +26,16 @@ class TodoRepository(private val todoDao: TodoDao) {
         }
     }
 
+    fun getAllUnchecked(): List<TodoEntity> {
+        var uncheckedTodos: List<TodoEntity> = listOf()
+        runBlocking {
+            launch(Dispatchers.IO) {
+                uncheckedTodos = todoDao.getUnchecked()
+            }
+        }
+        return uncheckedTodos
+    }
+
     fun getAllTodos(): List<TodoEntity> {
         var allTodos: List<TodoEntity> = listOf()
         runBlocking {
