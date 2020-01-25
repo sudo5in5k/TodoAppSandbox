@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
@@ -20,6 +21,7 @@ import com.example.todoappsandbox.databinding.ActivityMainBinding
 import com.example.todoappsandbox.repository.db.TodoEntity
 import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
+import kotlinx.android.synthetic.main.todo_item.view.*
 
 class TodoActivity : AppCompatActivity(),
     TodoListAdapter.TodoTouchEvent {
@@ -47,6 +49,21 @@ class TodoActivity : AppCompatActivity(),
 
             override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
                 return SWIPE_THRESHOLD
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                    viewHolder?.itemView?.container?.setBackgroundColor(Color.LTGRAY)
+                }
+                super.onSelectedChanged(viewHolder, actionState)
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                viewHolder.itemView.container.setBackgroundColor(Color.WHITE)
             }
         }
 
