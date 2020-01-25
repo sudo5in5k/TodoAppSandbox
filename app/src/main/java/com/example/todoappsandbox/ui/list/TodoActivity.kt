@@ -51,6 +51,7 @@ class TodoActivity : AppCompatActivity(),
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val castViewHolder = viewHolder as? TodoListAdapter.ViewHolder ?: return
                 val entity = castViewHolder.binding.todo ?: return
+                adapter.notifyItemChanged(castViewHolder.adapterPosition)
                 onDeleteClicked(entity)
             }
 
@@ -87,16 +88,25 @@ class TodoActivity : AppCompatActivity(),
                         drawIcon(c, it, dX)
                         drawBackGround(c, it, dX, viewHolder.adapterPosition)
                     }
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        dX,
+                        dY,
+                        actionState,
+                        isCurrentlyActive
+                    )
+                } else {
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        0f,
+                        dY,
+                        actionState,
+                        isCurrentlyActive)
                 }
-                super.onChildDraw(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive
-                )
             }
         }
 
