@@ -4,13 +4,20 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -64,6 +71,32 @@ class TodoActivity : AppCompatActivity(),
             ) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.container.setBackgroundColor(Color.WHITE)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    viewHolder.itemView.also {
+                        drawIcon(c, it, dX)
+                        drawBackGround(c, it, dX)
+                    }
+                }
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
         }
 
@@ -168,7 +201,55 @@ class TodoActivity : AppCompatActivity(),
         startActivityForResult(intent, Consts.INTENT_FROM_FAB)
     }
 
+    private fun drawIcon(canvas: Canvas, itemView: View, dx: Float) {
+        val iconBounds = Rect()
+        val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
+        val marginFromIconToItemView = itemView.resources.getDimensionPixelSize(R.dimen.icon_margin)
+        val marginVertical = (itemView.bottom - itemView.top - iconSize) / 2
+        with(iconBounds) {
+            left = itemView.right + dx.toInt() + marginFromIconToItemView
+            top = itemView.top + marginVertical
+            right = itemView.right + dx.toInt() + marginFromIconToItemView + iconSize
+            bottom = itemView.bottom - marginVertical
+        }
+
+        val icon = itemView.resources.getDrawable(
+            R.mipmap.ic_delete_on_swipe_round,
+            itemView.context.theme
+        )
+        icon.bounds = iconBounds
+        icon.draw(canvas)
+    }
+
+    /**
+     * set background on icon
+     */
+    private fun drawBackGround(canvas: Canvas, itemView: View, dx: Float) {
+        val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        val width = itemView.right - itemView.left
+        val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
+        val marginFromIconToItemView = itemView.resources.getDimensionPixelSize(R.dimen.icon_margin)
+
+        // change alpha depending on distance (dX)
+        val colorRGB = Color.GRAY
+        bgPaint.color = Color.argb(
+            ALPHA_MAX_VALUE - (dx * ALPHA_MAX_VALUE / width).toInt(),
+            colorRGB.red,
+            colorRGB.green,
+            colorRGB.blue
+        )
+
+        canvas.drawCircle(
+            itemView.right + dx + marginFromIconToItemView + iconSize / 2,
+            (itemView.bottom - itemView.top) / 2f,
+            iconSize * RADIUS_RATIO,
+            bgPaint
+        )
+    }
+
     companion object {
         private const val SWIPE_THRESHOLD = 0.2f
+        private const val ALPHA_MAX_VALUE = 255
+        private const val RADIUS_RATIO = 0.8f
     }
 }
