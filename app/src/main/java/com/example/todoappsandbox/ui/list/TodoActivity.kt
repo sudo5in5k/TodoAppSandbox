@@ -85,7 +85,7 @@ class TodoActivity : AppCompatActivity(),
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     viewHolder.itemView.also {
                         drawIcon(c, it, dX)
-                        drawBackGround(c, it, dX)
+                        drawBackGround(c, it, dX, viewHolder.adapterPosition)
                     }
                 }
                 super.onChildDraw(
@@ -224,7 +224,7 @@ class TodoActivity : AppCompatActivity(),
     /**
      * set background on icon
      */
-    private fun drawBackGround(canvas: Canvas, itemView: View, dx: Float) {
+    private fun drawBackGround(canvas: Canvas, itemView: View, dx: Float, pos: Int) {
         val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         val width = itemView.right - itemView.left
         val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
@@ -241,14 +241,14 @@ class TodoActivity : AppCompatActivity(),
 
         canvas.drawCircle(
             itemView.right + dx + marginFromIconToItemView + iconSize / 2,
-            (itemView.bottom - itemView.top) / 2f,
+            (itemView.bottom - itemView.top) / 2f + itemView.height * pos,
             iconSize * RADIUS_RATIO,
             bgPaint
         )
     }
 
     companion object {
-        private const val SWIPE_THRESHOLD = 0.2f
+        private const val SWIPE_THRESHOLD = 0.5f
         private const val ALPHA_MAX_VALUE = 255
         private const val RADIUS_RATIO = 0.8f
     }
