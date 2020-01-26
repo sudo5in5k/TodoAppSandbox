@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
-inline class TodoRepository(private val todoDao: TodoDao) {
+class TodoRepository(private val todoDao: TodoDao) {
 
     fun insertTodo(entity: TodoEntity) = runBlocking {
         launch(Dispatchers.IO) {

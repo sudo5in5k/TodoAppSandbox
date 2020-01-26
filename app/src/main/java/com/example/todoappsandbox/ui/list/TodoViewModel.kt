@@ -2,6 +2,7 @@ package com.example.todoappsandbox.ui.list
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todoappsandbox.repository.TodoRepository
@@ -37,7 +38,8 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
         updateTodo(TodoEntity(entity.id, entity.title, entity.description, nowChecked))
     }
 
-    private fun loadAllTodos() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun loadAllTodos() {
         allTodos.postValue(repository.getAllTodos())
     }
 

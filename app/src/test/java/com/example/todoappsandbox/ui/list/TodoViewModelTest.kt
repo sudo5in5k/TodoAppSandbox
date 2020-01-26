@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.example.todoappsandbox.repository.TodoRepository
 import com.example.todoappsandbox.repository.db.TodoEntity
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Rule
@@ -32,7 +33,7 @@ class TodoViewModelTest {
     fun verifyLoadTodoFromRepository() {
         `when`(repository.getAllTodos()).thenReturn(listOf())
         viewModel.loadAllTodos()
-        verify(repository).getAllTodos()
+        verify(repository, times(2)).getAllTodos()
     }
 
     @Test
