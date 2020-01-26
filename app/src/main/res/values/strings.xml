@@ -6,6 +6,6 @@
     <string name="hint_description">description</string>
     <string name="menu_save">save</string>
     <string name="default_top_text">Let\'s push add button, and add todos into this list.</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="widget_title">Unchecked Todos</string>
+    <string name="widget_description_no_todo">All Todos are checked!</string>
 </resources>

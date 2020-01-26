@@ -31,7 +31,6 @@ class DeleteConfirmDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance() = DeleteConfirmDialog()
         fun newInstance(entity: TodoEntity) = DeleteConfirmDialog().apply {
             this.entity = entity
         }
