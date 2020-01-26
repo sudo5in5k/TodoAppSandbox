@@ -14,25 +14,30 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
     val entity = MutableLiveData<TodoEntity?>()
     val topVisibility = MutableLiveData<Boolean>()
 
+    init {
+        loadAllTodos()
+    }
+
     private fun insertTodo(entity: TodoEntity) {
         repository.insertTodo(entity)
     }
 
     private fun updateTodo(entity: TodoEntity) {
         repository.updateTodo(entity)
+        loadAllTodos()
     }
 
     fun deleteTodo(entity: TodoEntity) {
         repository.deleteTodo(entity)
+        loadAllTodos()
     }
 
     fun checkTodo(entity: TodoEntity) {
         val nowChecked = !entity.isChecked
         updateTodo(TodoEntity(entity.id, entity.title, entity.description, nowChecked))
-        loadAllTodos()
     }
 
-    fun loadAllTodos() {
+    private fun loadAllTodos() {
         allTodos.postValue(repository.getAllTodos())
     }
 

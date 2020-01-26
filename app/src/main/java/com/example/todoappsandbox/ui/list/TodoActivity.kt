@@ -131,7 +131,6 @@ class TodoActivity : AppCompatActivity(),
             itemTouchHelper.attachToRecyclerView(it)
         }
 
-        todoViewModel.loadAllTodos()
         todoViewModel.allTodos.observe(this, Observer {
             adapter.setAllTodos(it)
             todoViewModel.switchVisibilityByTodos()
@@ -142,7 +141,6 @@ class TodoActivity : AppCompatActivity(),
                 deleteConfirmDialog = DeleteConfirmDialog.newInstance(it).apply {
                     onPositiveListener = DialogInterface.OnClickListener { _, _ ->
                         todoViewModel.deleteTodo(it)
-                        todoViewModel.loadAllTodos()
                         todoViewModel.entity.postValue(null)
                     }
                     onNegativeListener = DialogInterface.OnClickListener { _, _ ->
@@ -209,6 +207,7 @@ class TodoActivity : AppCompatActivity(),
         searchView.onActionViewCollapsed()
         val intent = Intent(this, NewTodoActivity::class.java)
         startActivityForResult(intent, Consts.INTENT_FROM_FAB)
+        overridePendingTransition(R.anim.normal, R.anim.bottom_up)
     }
 
     private fun drawIcon(canvas: Canvas, itemView: View, dx: Float) {
