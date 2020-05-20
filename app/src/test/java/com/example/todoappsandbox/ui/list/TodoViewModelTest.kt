@@ -39,19 +39,14 @@ class TodoViewModelTest {
     }
 
     @Test
-    fun verifyObserveTodoList() {
-        val observer = viewModel.result.testObserver()
+    fun verifyObserveTopVisibility() {
+        val observer = viewModel.topVisibility.testObserver()
 
         val testEntity = TodoEntity(null, "hoge", "piyo")
         `when`(repository.getAllTodos()).thenReturn(listOf(testEntity))
 
         viewModel.loadAllTodos()
-
-        inOrder(observer) {
-            //FIXME
-//            verify(observer).onChanged(ResponseResult.Empty())
-//            verify(observer).onChanged(ResponseResult.Success(listOf(testEntity)))
-        }
+        verify(observer).onChanged(false)
     }
 
     /**
