@@ -5,9 +5,9 @@ import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.example.todoappsandbox.R
-import com.example.todoappsandbox.repository.TodoRepository
-import com.example.todoappsandbox.repository.db.TodoDB
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.TodoRepository
+import com.example.todoappsandbox.data.repository.db.TodoDB
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 
 class TodoWidgetService : RemoteViewsService() {
 

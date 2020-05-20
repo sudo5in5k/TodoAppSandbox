@@ -3,8 +3,8 @@ package com.example.todoappsandbox.ui.list
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.todoappsandbox.repository.TodoRepository
-import com.example.todoappsandbox.repository.db.TodoDB
+import com.example.todoappsandbox.data.repository.TodoRepository
+import com.example.todoappsandbox.data.repository.db.TodoDB
 
 class TodoListFactory(application: Application) :
     ViewModelProvider.NewInstanceFactory() {

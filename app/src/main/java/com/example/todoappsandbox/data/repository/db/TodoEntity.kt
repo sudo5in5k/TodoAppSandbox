@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.repository.db
+package com.example.todoappsandbox.data.repository.db
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

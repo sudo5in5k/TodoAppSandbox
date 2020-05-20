@@ -3,17 +3,29 @@ package com.example.todoappsandbox.ui.list
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoappsandbox.repository.TodoRepository
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.ResponseResult
+import com.example.todoappsandbox.data.repository.TodoRepository
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
 
 class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
-    val allTodos = MutableLiveData<List<TodoEntity>>()
-    val entity = MutableLiveData<TodoEntity?>()
+    private val _toDeleteDialog = MutableLiveData<TodoEntity>()
+    val toDeleteDialog: LiveData<TodoEntity>
+        get() = _toDeleteDialog
+
     val topVisibility = MutableLiveData<Boolean>()
+
+    private val _result = MutableLiveData<ResponseResult<TodoEntity>>()
+    val result: LiveData<ResponseResult<TodoEntity>>
+        get() = _result
+
+    private val _toNew = MutableLiveData<Boolean>()
+    val toNew: LiveData<Boolean>
+        get() = _toNew
 
     init {
         loadAllTodos()
@@ -40,19 +52,27 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun loadAllTodos() {
-        allTodos.postValue(repository.getAllTodos())
-    }
-
-    fun setEntity(entity: TodoEntity) {
-        this.entity.postValue(entity)
-    }
-
-    fun switchVisibilityByTodos() {
-        if (allTodos.value.isNullOrEmpty()) {
-            topVisibility.postValue(true)
-        } else {
-            topVisibility.postValue(false)
+        try {
+            val todos = repository.getAllTodos()
+            if (todos.isNullOrEmpty()) {
+                _result.value = ResponseResult.Empty()
+                topVisibility.value = true
+            } else {
+                _result.value = ResponseResult.Success(todos)
+                topVisibility.value = false
+            }
+        } catch (e: Exception) {
+            _result.value = ResponseResult.Error(e.message)
+            topVisibility.value = true
         }
+    }
+
+    fun toDeleteDialog(entity: TodoEntity) {
+        _toDeleteDialog.postValue(entity)
+    }
+
+    fun onFabClicked() {
+        _toNew.value = true
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

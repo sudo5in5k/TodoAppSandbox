@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoappsandbox.databinding.TodoItemBinding
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 import java.util.Locale
 
 class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewModel) :
@@ -36,6 +36,7 @@ class TodoListAdapter(todoTouchEvent: TodoTouchEvent, val viewModel: TodoViewMod
         holder.binding.todo = entity
         holder.binding.event = events
         holder.binding.viewModel = viewModel
+        holder.binding.executePendingBindings()
     }
 
     /**

@@ -3,8 +3,8 @@ package com.example.todoappsandbox.ui.list
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.example.todoappsandbox.repository.TodoRepository
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.TodoRepository
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify

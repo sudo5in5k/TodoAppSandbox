@@ -1,7 +1,7 @@
-package com.example.todoappsandbox.repository
+package com.example.todoappsandbox.data.repository
 
-import com.example.todoappsandbox.repository.db.TodoDao
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.db.TodoDao
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

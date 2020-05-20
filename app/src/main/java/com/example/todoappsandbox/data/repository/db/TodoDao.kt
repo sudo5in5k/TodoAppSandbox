@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.repository.db
+package com.example.todoappsandbox.data.repository.db
 
 import androidx.room.Dao
 import androidx.room.Delete

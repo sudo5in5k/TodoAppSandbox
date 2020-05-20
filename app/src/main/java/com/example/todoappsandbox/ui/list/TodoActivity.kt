@@ -2,7 +2,6 @@ package com.example.todoappsandbox.ui.list
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -12,6 +11,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -20,24 +20,24 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoappsandbox.R
+import com.example.todoappsandbox.data.ResponseResult
 import com.example.todoappsandbox.databinding.ActivityMainBinding
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
 import kotlinx.android.synthetic.main.todo_item.view.*
 
-class TodoActivity : AppCompatActivity(),
-    TodoListAdapter.TodoTouchEvent {
+class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     private val todoViewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
-    private lateinit var adapter: TodoListAdapter
+    private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var searchView: SearchView
     private lateinit var activityMainBinding: ActivityMainBinding
-    private var deleteConfirmDialog: DeleteConfirmDialog? = null
     private val swipeToDismissCallBack =
         object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -51,7 +51,6 @@ class TodoActivity : AppCompatActivity(),
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val castViewHolder = viewHolder as? TodoListAdapter.ViewHolder ?: return
                 val entity = castViewHolder.binding.todo ?: return
-                adapter.notifyItemChanged(castViewHolder.adapterPosition)
                 onDeleteClicked(entity)
             }
 
@@ -105,7 +104,8 @@ class TodoActivity : AppCompatActivity(),
                         0f,
                         dY,
                         actionState,
-                        isCurrentlyActive)
+                        isCurrentlyActive
+                    )
                 }
             }
         }
@@ -114,40 +114,55 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = TodoListAdapter(this, todoViewModel)
+        todoListAdapter = TodoListAdapter(this, todoViewModel)
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        activityMainBinding.lifecycleOwner = this
-
-        activityMainBinding.also {
-            it.activity = this@TodoActivity
-            it.viewModel = todoViewModel
+        activityMainBinding.apply {
+            viewModel = todoViewModel
+            lifecycleOwner = this@TodoActivity
         }
 
-        activityMainBinding.todoListRecycler.also {
-            it.adapter = adapter
-            it.layoutManager = LinearLayoutManager(this)
-            it.setHasFixedSize(true)
-            itemTouchHelper.attachToRecyclerView(it)
+        activityMainBinding.todoListRecycler.apply {
+            adapter = todoListAdapter
+            layoutManager = LinearLayoutManager(this@TodoActivity)
+            setHasFixedSize(true)
+            itemTouchHelper.attachToRecyclerView(this)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@TodoActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
-        todoViewModel.allTodos.observe(this, Observer {
-            adapter.setAllTodos(it)
-            todoViewModel.switchVisibilityByTodos()
+        todoViewModel.result.observe(this, Observer {
+            when (it) {
+                is ResponseResult.Success -> {
+                    todoListAdapter.setAllTodos(it.data)
+                }
+                else -> Unit
+            }
         })
 
-        todoViewModel.entity.observe(this, Observer {
-            if (it != null) {
-                deleteConfirmDialog = DeleteConfirmDialog.newInstance(it).apply {
-                    onPositiveListener = DialogInterface.OnClickListener { _, _ ->
-                        todoViewModel.deleteTodo(it)
-                        todoViewModel.entity.postValue(null)
-                    }
-                    onNegativeListener = DialogInterface.OnClickListener { _, _ ->
-                        todoViewModel.entity.postValue(null)
-                    }
+        todoViewModel.toDeleteDialog.observe(this, Observer {
+            val deleteConfirmDialog = DeleteConfirmDialog.newInstance(it).apply {
+                onPositiveListener = {
+                    todoViewModel.deleteTodo(it)
                 }
-                deleteConfirmDialog?.show(supportFragmentManager, null)
+                onNegativeListener = {
+                    Toast.makeText(this@TodoActivity, "Delete cancelled", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            deleteConfirmDialog.show(supportFragmentManager, null)
+        })
+
+        todoViewModel.toNew.observe(this, Observer {
+            if (it) {
+                searchView.onActionViewCollapsed()
+                val intent = Intent(this, NewTodoActivity::class.java)
+                startActivityForResult(intent, Consts.INTENT_FROM_FAB)
+                overridePendingTransition(R.anim.normal, R.anim.bottom_up)
             }
         })
     }
@@ -172,13 +187,13 @@ class TodoActivity : AppCompatActivity(),
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-                    adapter.filtering().filter(p0)
+                    todoListAdapter.filtering().filter(p0)
                     clearFocus()
                     return false
                 }
 
                 override fun onQueryTextChange(p0: String?): Boolean {
-                    adapter.filtering().filter(p0)
+                    todoListAdapter.filtering().filter(p0)
                     return false
                 }
             })
@@ -188,7 +203,7 @@ class TodoActivity : AppCompatActivity(),
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        todoViewModel.setEntity(entity)
+        todoViewModel.toDeleteDialog(entity)
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
@@ -201,13 +216,6 @@ class TodoActivity : AppCompatActivity(),
     override fun onCheckClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
         todoViewModel.checkTodo(entity)
-    }
-
-    fun onFabClicked() {
-        searchView.onActionViewCollapsed()
-        val intent = Intent(this, NewTodoActivity::class.java)
-        startActivityForResult(intent, Consts.INTENT_FROM_FAB)
-        overridePendingTransition(R.anim.normal, R.anim.bottom_up)
     }
 
     private fun drawIcon(canvas: Canvas, itemView: View, dx: Float) {

@@ -1,30 +1,34 @@
 package com.example.todoappsandbox.ui.create
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoappsandbox.repository.TodoRepository
-import com.example.todoappsandbox.repository.db.TodoEntity
+import com.example.todoappsandbox.data.repository.TodoRepository
+import com.example.todoappsandbox.data.repository.db.TodoEntity
 
-class NewTodoViewModel(val repository: TodoRepository) : ViewModel() {
+class NewTodoViewModel(val repository: TodoRepository, val entity: TodoEntity?) : ViewModel() {
 
-    val activityTitle = MutableLiveData<String>()
     val todoTitle = MutableLiveData<String>()
     val todoDescription = MutableLiveData<String>()
 
-    private fun setTodoTitle(entity: TodoEntity?) {
-        todoTitle.value = entity?.title
+    private val _backToList = MutableLiveData<TodoEntity>()
+    val backToList: LiveData<TodoEntity>
+        get() = _backToList
+
+    init {
+        if (entity != null) {
+            todoTitle.value = entity.title
+            todoDescription.value = entity.description
+        }
     }
 
-    private fun setDescription(entity: TodoEntity?) {
-        todoDescription.value = entity?.description
-    }
-
-    fun setTodo(entity: TodoEntity?) {
-        setTodoTitle(entity)
-        setDescription(entity)
-    }
-
-    fun setMenuTitle(todoEntity: TodoEntity?) {
-        activityTitle.value = if (todoEntity != null) "Edit" else "New"
+    fun saveTodo() {
+        val currentTodoEntity = TodoEntity(
+            entity?.id,
+            todoTitle.value ?: "",
+            todoDescription.value ?: "",
+            entity?.isChecked ?: false
+        )
+        _backToList.value = currentTodoEntity
     }
 }

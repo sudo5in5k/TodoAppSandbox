@@ -2,6 +2,7 @@ package com.example.todoappsandbox.ui.list
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
