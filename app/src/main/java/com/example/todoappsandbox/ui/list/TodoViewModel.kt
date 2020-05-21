@@ -10,10 +10,11 @@ import com.example.todoappsandbox.data.ResponseResult
 import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
+import com.example.todoappsandbox.utils.SingleLiveEvent
 
 class TodoViewModel(val repository: TodoRepository) : ViewModel() {
 
-    private val _toDeleteDialog = MutableLiveData<TodoEntity>()
+    private val _toDeleteDialog = SingleLiveEvent<TodoEntity>()
     val toDeleteDialog: LiveData<TodoEntity>
         get() = _toDeleteDialog
 
