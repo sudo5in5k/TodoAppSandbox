@@ -6,7 +6,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoappsandbox.data.ResponseResult
 import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
@@ -17,8 +16,6 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
     private val _toDeleteDialog = MutableLiveData<TodoEntity>()
     val toDeleteDialog: LiveData<TodoEntity>
         get() = _toDeleteDialog
-
-    //val topVisibility = MutableLiveData<Boolean>()
 
     private val _result = MutableLiveData<State<TodoEntity>>()
     val result: LiveData<State<TodoEntity>>
@@ -58,14 +55,11 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
             val todos = repository.getAllTodos()
             if (todos.isNullOrEmpty()) {
                 _result.value = State.Success(emptyList())
-                //topVisibility.value = true
             } else {
                 _result.value = State.Success(todos)
-                //topVisibility.value = false
             }
         } catch (e: Exception) {
             _result.value = State.Error(e)
-            //topVisibility.value = true
         }
     }
 
