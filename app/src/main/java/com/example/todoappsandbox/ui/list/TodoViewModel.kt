@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todoappsandbox.data.ResponseResult
+import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
@@ -17,10 +18,10 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
     val toDeleteDialog: LiveData<TodoEntity>
         get() = _toDeleteDialog
 
-    val topVisibility = MutableLiveData<Boolean>()
+    //val topVisibility = MutableLiveData<Boolean>()
 
-    private val _result = MutableLiveData<ResponseResult<TodoEntity>>()
-    val result: LiveData<ResponseResult<TodoEntity>>
+    private val _result = MutableLiveData<State<TodoEntity>>()
+    val result: LiveData<State<TodoEntity>>
         get() = _result
 
     private val _toNew = MutableLiveData<Boolean>()
@@ -53,17 +54,18 @@ class TodoViewModel(val repository: TodoRepository) : ViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun loadAllTodos() {
         try {
+            _result.value = State.Loading
             val todos = repository.getAllTodos()
             if (todos.isNullOrEmpty()) {
-                _result.value = ResponseResult.Empty()
-                topVisibility.value = true
+                _result.value = State.Success(emptyList())
+                //topVisibility.value = true
             } else {
-                _result.value = ResponseResult.Success(todos)
-                topVisibility.value = false
+                _result.value = State.Success(todos)
+                //topVisibility.value = false
             }
         } catch (e: Exception) {
-            _result.value = ResponseResult.Error(e.message)
-            topVisibility.value = true
+            _result.value = State.Error(e)
+            //topVisibility.value = true
         }
     }
 
