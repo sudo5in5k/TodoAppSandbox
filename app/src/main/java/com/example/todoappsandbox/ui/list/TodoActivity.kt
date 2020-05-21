@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoappsandbox.R
-import com.example.todoappsandbox.data.ResponseResult
-import com.example.todoappsandbox.databinding.ActivityMainBinding
+import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.db.TodoEntity
+import com.example.todoappsandbox.databinding.ActivityMainBinding
 import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
 import kotlinx.android.synthetic.main.todo_item.view.*
@@ -137,10 +137,20 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
         todoViewModel.result.observe(this, Observer {
             when (it) {
-                is ResponseResult.Success -> {
+                is State.Loading -> activityMainBinding.progress.visibility = View.VISIBLE
+                is State.Error -> {
+                    activityMainBinding.progress.visibility = View.GONE
+                    activityMainBinding.defaultTop.visibility = View.VISIBLE
+                }
+                is State.Success -> {
+                    activityMainBinding.progress.visibility = View.GONE
+                    if (it.data.isNullOrEmpty()) {
+                        activityMainBinding.defaultTop.visibility = View.VISIBLE
+                    } else {
+                        activityMainBinding.defaultTop.visibility = View.GONE
+                    }
                     todoListAdapter.setAllTodos(it.data)
                 }
-                else -> Unit
             }
         })
 

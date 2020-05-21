@@ -3,10 +3,9 @@ package com.example.todoappsandbox.ui.list
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.example.todoappsandbox.data.ResponseResult
+import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
-import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
@@ -39,14 +38,14 @@ class TodoViewModelTest {
     }
 
     @Test
-    fun verifyObserveTopVisibility() {
-        val observer = viewModel.topVisibility.testObserver()
+    fun verifyObserve() {
+        val observer = viewModel.result.testObserver()
 
         val testEntity = TodoEntity(null, "hoge", "piyo")
         `when`(repository.getAllTodos()).thenReturn(listOf(testEntity))
 
         viewModel.loadAllTodos()
-        verify(observer).onChanged(false)
+        verify(observer).onChanged(State.Success(listOf(testEntity)))
     }
 
     /**
