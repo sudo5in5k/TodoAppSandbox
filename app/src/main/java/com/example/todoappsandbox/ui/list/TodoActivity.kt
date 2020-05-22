@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
@@ -15,9 +15,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -84,8 +81,8 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
             ) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     viewHolder.itemView.also {
+                        drawBackGround(c, it, dX)
                         drawIcon(c, it, dX)
-                        drawBackGround(c, it, dX, viewHolder.adapterPosition)
                     }
                     super.onChildDraw(
                         c,
@@ -241,7 +238,7 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
         }
 
         val icon = itemView.resources.getDrawable(
-            R.mipmap.ic_delete_on_swipe_round,
+            R.drawable.ic_archive_gray_24dp,
             itemView.context.theme
         )
         icon.bounds = iconBounds
@@ -251,32 +248,17 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
     /**
      * set background on icon
      */
-    private fun drawBackGround(canvas: Canvas, itemView: View, dx: Float, pos: Int) {
-        val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        val width = itemView.right - itemView.left
-        val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
-        val marginFromIconToItemView = itemView.resources.getDimensionPixelSize(R.dimen.icon_margin)
-
-        // change alpha depending on distance (dX)
-        val colorRGB = Color.GRAY
-        bgPaint.color = Color.argb(
-            ALPHA_MAX_VALUE - (dx * ALPHA_MAX_VALUE / width).toInt(),
-            colorRGB.red,
-            colorRGB.green,
-            colorRGB.blue
-        )
-
-        canvas.drawCircle(
-            itemView.right + dx + marginFromIconToItemView + iconSize / 2,
-            (itemView.bottom - itemView.top) / 2f + itemView.height * pos,
-            iconSize * RADIUS_RATIO,
-            bgPaint
-        )
+    private fun drawBackGround(canvas: Canvas, itemView: View, dx: Float) {
+        val colorRGB = Color.parseColor(BACKGROUND_COLOR_DELETE)
+        val background = ColorDrawable().apply {
+            color = colorRGB
+            setBounds(itemView.right + dx.toInt(), itemView.top, itemView.right, itemView.bottom)
+        }
+        background.draw(canvas)
     }
 
     companion object {
         private const val SWIPE_THRESHOLD = 0.5f
-        private const val ALPHA_MAX_VALUE = 255
-        private const val RADIUS_RATIO = 0.8f
+        private const val BACKGROUND_COLOR_DELETE = "#f44336"
     }
 }
