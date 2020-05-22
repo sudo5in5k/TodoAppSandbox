@@ -27,5 +27,4 @@ This app has following packages:
 
 # Future Tasks
 
-- Fix Swipe Design on RecyclerView like Gmail
 - Introduce Dagger2
