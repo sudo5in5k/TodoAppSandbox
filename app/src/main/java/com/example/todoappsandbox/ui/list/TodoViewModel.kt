@@ -11,8 +11,9 @@ import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.utils.Consts
 import com.example.todoappsandbox.utils.SingleLiveEvent
+import javax.inject.Inject
 
-class TodoViewModel(val repository: TodoRepository) : ViewModel() {
+class TodoViewModel @Inject constructor(val repository: TodoRepository) : ViewModel() {
 
     private val _toDeleteDialog = SingleLiveEvent<TodoEntity>()
     val toDeleteDialog: LiveData<TodoEntity>

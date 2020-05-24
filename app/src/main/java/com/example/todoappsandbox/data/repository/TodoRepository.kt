@@ -5,9 +5,10 @@ import com.example.todoappsandbox.data.repository.db.TodoEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
-class TodoRepository(private val todoDao: TodoDao) {
+class TodoRepository @Inject constructor(private val todoDao: TodoDao) {
 
     fun insertTodo(entity: TodoEntity) = runBlocking {
         launch(Dispatchers.IO) {
