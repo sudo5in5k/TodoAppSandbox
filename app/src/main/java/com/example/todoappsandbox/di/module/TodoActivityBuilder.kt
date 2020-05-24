@@ -1,6 +1,8 @@
-package com.example.todoappsandbox.di
+package com.example.todoappsandbox.di.module
 
 import androidx.lifecycle.ViewModel
+import com.example.todoappsandbox.di.ActivityScope
+import com.example.todoappsandbox.di.ViewModelKey
 import com.example.todoappsandbox.ui.list.TodoActivity
 import com.example.todoappsandbox.ui.list.TodoViewModel
 import dagger.Binds

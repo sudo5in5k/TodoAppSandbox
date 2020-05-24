@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.di
+package com.example.todoappsandbox.di.module
 
 import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoDao

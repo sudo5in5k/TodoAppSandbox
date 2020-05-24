@@ -1,4 +1,4 @@
-package com.example.todoappsandbox.di
+package com.example.todoappsandbox.di.module
 
 import android.content.Context
 import com.example.todoappsandbox.data.repository.db.TodoDB
