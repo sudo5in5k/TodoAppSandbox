@@ -7,11 +7,14 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule {
+object DatabaseModule {
+
+    @JvmStatic
     @Singleton
     @Provides
     fun provideDb(context: Context) = TodoDB.getInstance(context)
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideDao(db: TodoDB) = db.todoDao()

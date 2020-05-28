@@ -1,6 +1,6 @@
 package com.example.todoappsandbox.ui
 
-import com.example.todoappsandbox.di.DaggerAppComponent
+import com.example.todoappsandbox.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 

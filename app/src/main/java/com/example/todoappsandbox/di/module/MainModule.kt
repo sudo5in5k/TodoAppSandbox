@@ -7,7 +7,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class MainModule {
+object MainModule {
+
+    @JvmStatic
     @Singleton
     @Provides
     fun provideTodoRepository(dao: TodoDao) = TodoRepository(dao)
