@@ -29,7 +29,7 @@ class NewTodoActivity : AppCompatActivity() {
 
         newTodoViewModel = ViewModelProvider(
             this,
-            NewTodoFactory(application, todoEntity)
+            NewTodoFactory(todoEntity)
         ).get(NewTodoViewModel::class.java)
 
         binding.apply {
