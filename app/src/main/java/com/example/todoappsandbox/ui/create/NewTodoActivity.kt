@@ -12,7 +12,6 @@ import com.example.todoappsandbox.R
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.databinding.ActivityNewTodoBinding
 import com.example.todoappsandbox.utils.Consts
-import dagger.android.support.DaggerAppCompatActivity
 
 class NewTodoActivity : AppCompatActivity() {
 

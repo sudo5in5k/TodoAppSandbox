@@ -2,26 +2,28 @@ package com.example.todoappsandbox.di.component
 
 import com.example.todoappsandbox.di.module.AppModule
 import com.example.todoappsandbox.di.module.DatabaseModule
-import com.example.todoappsandbox.di.module.MainModule
-import com.example.todoappsandbox.di.module.TodoActivityBuilder
+import com.example.todoappsandbox.di.module.RepositoryModule
+import com.example.todoappsandbox.di.module.ViewModelModule
 import com.example.todoappsandbox.ui.App
+import com.example.todoappsandbox.ui.list.TodoActivity
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
-import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
-        AndroidInjectionModule::class,
         AppModule::class,
-        TodoActivityBuilder::class,
+        ViewModelModule::class,
         DatabaseModule::class,
-        MainModule::class
+        RepositoryModule::class
     ]
 )
-interface AppComponent : AndroidInjector<App> {
+interface AppComponent {
+
+    fun inject(app: App)
+    fun inject(todoActivity: TodoActivity)
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance app: App): AppComponent

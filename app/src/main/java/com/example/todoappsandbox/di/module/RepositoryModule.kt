@@ -7,7 +7,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-object MainModule {
+object RepositoryModule {
 
     @JvmStatic
     @Singleton

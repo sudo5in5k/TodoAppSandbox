@@ -12,7 +12,6 @@ import android.text.InputType
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -27,17 +26,17 @@ import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.databinding.ActivityMainBinding
 import com.example.todoappsandbox.di.ViewModelFactory
+import com.example.todoappsandbox.ui.App
 import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.todo_item.view.*
 import javax.inject.Inject
 
-class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
+class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     @Inject
     lateinit var todoViewModelFactory: ViewModelFactory
-    lateinit var todoViewModel: TodoViewModel
+    private lateinit var todoViewModel: TodoViewModel
     private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var searchView: SearchView
     private lateinit var activityMainBinding: ActivityMainBinding
@@ -117,6 +116,7 @@ class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        App.getApplicationComponent().inject(this)
         todoViewModel = ViewModelProvider(this, todoViewModelFactory).get(TodoViewModel::class.java)
         todoListAdapter = TodoListAdapter(this, todoViewModel)
 

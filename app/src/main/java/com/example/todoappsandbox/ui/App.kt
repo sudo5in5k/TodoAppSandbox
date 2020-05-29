@@ -1,11 +1,20 @@
 package com.example.todoappsandbox.ui
 
+import android.app.Application
+import com.example.todoappsandbox.di.component.AppComponent
 import com.example.todoappsandbox.di.component.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
 
-class App : DaggerApplication() {
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.factory().create(this)
+class App : Application() {
+
+
+    override fun onCreate() {
+        super.onCreate()
+        component = DaggerAppComponent.factory().create(this)
+        component.inject(this)
+    }
+
+    companion object {
+        lateinit var component: AppComponent
+        fun getApplicationComponent() = component
     }
 }
