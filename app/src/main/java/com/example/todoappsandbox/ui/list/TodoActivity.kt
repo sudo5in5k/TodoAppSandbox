@@ -215,7 +215,7 @@ class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        todoViewModel. toDeleteDialog(entity)
+        todoViewModel.toDeleteDialog(entity)
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
