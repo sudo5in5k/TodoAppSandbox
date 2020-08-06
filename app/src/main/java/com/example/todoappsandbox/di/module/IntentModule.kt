@@ -9,7 +9,9 @@ import dagger.Provides
 
 @Module
 object IntentModule {
+
     @Nullable
+    @JvmStatic
     @Provides
     fun provideEntity(activity: NewTodoActivity): TodoEntity? =
         activity.intent.getParcelableExtra(Consts.INTENT) as? TodoEntity
