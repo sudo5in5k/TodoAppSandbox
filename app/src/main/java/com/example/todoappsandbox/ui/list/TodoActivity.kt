@@ -54,7 +54,7 @@ class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val castViewHolder = viewHolder as? TodoListAdapter.ViewHolder ?: return
                 val entity = castViewHolder.binding.todo ?: return
-                onDeleteClicked(entity)
+                todoViewModel.deleteTodo(entity)
             }
 
             override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
@@ -217,7 +217,7 @@ class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     override fun onDeleteClicked(entity: TodoEntity) {
         searchView.onActionViewCollapsed()
-        todoViewModel.toDeleteDialog(entity)
+        todoViewModel. toDeleteDialog(entity)
     }
 
     override fun onTodoClicked(entity: TodoEntity) {
