@@ -23,7 +23,7 @@ class TodoViewModel @Inject constructor(val repository: TodoRepository) : ViewMo
     val result: LiveData<State<TodoEntity>>
         get() = _result
 
-    private val _toNew = MutableLiveData<Boolean>()
+    private val _toNew = SingleLiveEvent<Boolean>()
     val toNew: LiveData<Boolean>
         get() = _toNew
 
