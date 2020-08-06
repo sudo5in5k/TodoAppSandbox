@@ -3,10 +3,10 @@ package com.example.todoappsandbox.ui.create
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoappsandbox.data.repository.TodoRepository
 import com.example.todoappsandbox.data.repository.db.TodoEntity
+import javax.inject.Inject
 
-class NewTodoViewModel(val repository: TodoRepository, val entity: TodoEntity?) : ViewModel() {
+class NewTodoViewModel @Inject constructor(val entity: TodoEntity?) : ViewModel() {
 
     val todoTitle = MutableLiveData<String>()
     val todoDescription = MutableLiveData<String>()

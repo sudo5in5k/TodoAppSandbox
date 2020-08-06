@@ -12,11 +12,10 @@ import android.text.InputType
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,13 +24,18 @@ import com.example.todoappsandbox.R
 import com.example.todoappsandbox.data.State
 import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.databinding.ActivityMainBinding
+import com.example.todoappsandbox.di.ViewModelFactory
 import com.example.todoappsandbox.ui.create.NewTodoActivity
 import com.example.todoappsandbox.utils.Consts
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.todo_item.view.*
+import javax.inject.Inject
 
-class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
+class TodoActivity : DaggerAppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
-    private val todoViewModel: TodoViewModel by viewModels { TodoListFactory(this.application) }
+    @Inject
+    lateinit var todoViewModelFactory: ViewModelFactory
+    lateinit var todoViewModel: TodoViewModel
     private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var searchView: SearchView
     private lateinit var activityMainBinding: ActivityMainBinding
@@ -48,7 +52,7 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val castViewHolder = viewHolder as? TodoListAdapter.ViewHolder ?: return
                 val entity = castViewHolder.binding.todo ?: return
-                onDeleteClicked(entity)
+                todoViewModel.deleteTodo(entity)
             }
 
             override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
@@ -111,6 +115,7 @@ class TodoActivity : AppCompatActivity(), TodoListAdapter.TodoTouchEvent {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        todoViewModel = ViewModelProvider(this, todoViewModelFactory).get(TodoViewModel::class.java)
         todoListAdapter = TodoListAdapter(this, todoViewModel)
 
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
