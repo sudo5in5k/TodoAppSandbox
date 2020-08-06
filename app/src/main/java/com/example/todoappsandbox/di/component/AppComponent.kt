@@ -1,9 +1,6 @@
 package com.example.todoappsandbox.di.component
 
-import com.example.todoappsandbox.di.module.AppModule
-import com.example.todoappsandbox.di.module.DatabaseModule
-import com.example.todoappsandbox.di.module.MainModule
-import com.example.todoappsandbox.di.module.TodoActivityBuilder
+import com.example.todoappsandbox.di.module.*
 import com.example.todoappsandbox.ui.App
 import dagger.BindsInstance
 import dagger.Component
@@ -16,9 +13,8 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AppModule::class,
-        TodoActivityBuilder::class,
-        DatabaseModule::class,
-        MainModule::class
+        ActivityModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

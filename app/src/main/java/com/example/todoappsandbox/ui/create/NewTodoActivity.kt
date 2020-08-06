@@ -4,19 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.todoappsandbox.R
-import com.example.todoappsandbox.data.repository.db.TodoEntity
 import com.example.todoappsandbox.databinding.ActivityNewTodoBinding
+import com.example.todoappsandbox.di.ViewModelFactory
 import com.example.todoappsandbox.utils.Consts
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class NewTodoActivity : AppCompatActivity() {
+class NewTodoActivity : DaggerAppCompatActivity() {
 
-    private var todoEntity: TodoEntity? = null
+    @Inject
+    lateinit var newTodoViewModelFactory: ViewModelFactory
+
     private lateinit var newTodoViewModel: NewTodoViewModel
     private lateinit var binding: ActivityNewTodoBinding
 
@@ -24,12 +26,9 @@ class NewTodoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_todo)
 
-        // If it is from already exits item, return non-null
-        todoEntity = intent.getParcelableExtra(Consts.INTENT)
-
         newTodoViewModel = ViewModelProvider(
             this,
-            NewTodoFactory(todoEntity)
+            newTodoViewModelFactory
         ).get(NewTodoViewModel::class.java)
 
         binding.apply {
@@ -44,7 +43,7 @@ class NewTodoActivity : AppCompatActivity() {
             finish()
         })
 
-        title = if (todoEntity != null) "Edit" else "New"
+        title = if (newTodoViewModel.entity != null) "Edit" else "New"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
