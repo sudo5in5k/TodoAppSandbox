@@ -27,4 +27,4 @@ This app has following packages:
 
 # Future Tasks
 
-- Introduce Dagger2
+- Dagger2 on widget
