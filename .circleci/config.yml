@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Put google-services.json
-          command: echo $GOOGLE_SERVICES | base64 --decode > ~/${HOME}/app/google-services.json
+          command: echo $GOOGLE_SERVICES | base64 --decode > ~/app/google-services.json
       - run:
           name: Run jacoco
           command: ./gradlew :app:jacocoTestReport --stacktrace
