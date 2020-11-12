@@ -109,7 +109,6 @@ dependencies {
     def core_testing_version = "2.1.0"
     testImplementation "androidx.arch.core:core-testing:$core_testing_version"
 
-
     // ui test extensions for espresso
     def junit_ktx_version = "1.1.1"
     androidTestImplementation "androidx.test.ext:junit-ktx:$junit_ktx_version"
